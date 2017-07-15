@@ -31,7 +31,7 @@ public class GeneratorScript : MonoBehaviour {
         
         float roomWidth = room.transform.FindChild("Floor").localScale.x;
 
-        float roomCenter = farhtestRoomEndX + roomWidth * 0.5f;
+        float roomCenter = farhtestRoomEndX + (roomWidth * 0.5f);
 
         room.transform.position = new Vector3(roomCenter, 0, 0);
 

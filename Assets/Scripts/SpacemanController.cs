@@ -12,11 +12,13 @@ public class SpacemanController : MonoBehaviour
     public ParticleSystem jetpack;
 
     private bool grounded;
+    private float previousAltitude;
 
     Animator animator;
 
     void Start()
     {
+        previousAltitude = transform.position.y;
         animator = GetComponent<Animator>();
     }
 
@@ -34,6 +36,7 @@ public class SpacemanController : MonoBehaviour
         GetComponent<Rigidbody2D>().velocity = newVelocity;
 
         UpdateGroundedStatus();
+        UpdateEngineStatus(transform.position.y > previousAltitude);
         AdjustJetpack(floatActive);
     }
 
@@ -42,6 +45,12 @@ public class SpacemanController : MonoBehaviour
         grounded = Physics2D.OverlapCircle(groundCheckTransform.position, 0.1f, groundCheckLayerMask);
 
         animator.SetBool("grounded", grounded);
+    }
+
+    void UpdateEngineStatus(bool falling)
+    {
+        animator.SetBool("engine", falling);
+        previousAltitude = transform.position.y;
     }
 
     void AdjustJetpack(bool jetpackActive)
