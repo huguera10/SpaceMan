@@ -29,7 +29,7 @@ public class GeneratorScript : MonoBehaviour {
         int randomRoomIndex = Random.Range(0, availableRooms.Length);
         GameObject room = (GameObject)Instantiate(availableRooms[randomRoomIndex]);
         
-        float roomWidth = room.transform.FindChild("Floor").localScale.x;
+        float roomWidth = room.transform.Find("Floor").localScale.x;
 
         float roomCenter = farhtestRoomEndX + (roomWidth * 0.5f);
 
@@ -50,7 +50,7 @@ public class GeneratorScript : MonoBehaviour {
 
         foreach (var room in currentRooms)
         {
-            float roomWidth = room.transform.FindChild("Floor").localScale.x;
+            float roomWidth = room.transform.Find("Floor").localScale.x;
             float roomStartX = room.transform.position.x - (roomWidth * 0.5f);
             float roomEndX = roomStartX + roomWidth;
 

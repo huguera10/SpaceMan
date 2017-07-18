@@ -36,7 +36,7 @@ public class SpacemanController : MonoBehaviour
         GetComponent<Rigidbody2D>().velocity = newVelocity;
 
         UpdateGroundedStatus();
-        UpdateEngineStatus(transform.position.y > previousAltitude);
+        UpdateEngineStatus(transform.position.y >= previousAltitude || floatActive);
         AdjustJetpack(floatActive);
     }
 
