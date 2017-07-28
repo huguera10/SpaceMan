@@ -11,6 +11,7 @@ public class SpacemanController : MonoBehaviour
     public LayerMask groundCheckLayerMask;
     public ParticleSystem jetpack;
 
+    private bool standingby;
     private bool grounded;
     private float previousAltitude;
 
@@ -20,24 +21,33 @@ public class SpacemanController : MonoBehaviour
     {
         previousAltitude = transform.position.y;
         animator = GetComponent<Animator>();
+        standingby = true;
+
+        var emission = jetpack.emission;
+        emission.enabled = false;
     }
 
     void FixedUpdate()
     {
         bool floatActive = Input.GetButton("Fire1");
 
-        if (floatActive)
+        if (floatActive == true) { standingby = false; animator.SetBool("standing", standingby); }
+
+        if (!standingby)
         {
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, floatForce));
+            if (floatActive)
+            {
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, floatForce));
+            }
+
+            Vector2 newVelocity = GetComponent<Rigidbody2D>().velocity;
+            newVelocity.x = forwardMovementSpeed;
+            GetComponent<Rigidbody2D>().velocity = newVelocity;
+
+            UpdateGroundedStatus();
+            UpdateEngineStatus(floatActive );
+            AdjustJetpack(floatActive);
         }
-
-        Vector2 newVelocity = GetComponent<Rigidbody2D>().velocity;
-        newVelocity.x = forwardMovementSpeed;
-        GetComponent<Rigidbody2D>().velocity = newVelocity;
-
-        UpdateGroundedStatus();
-        UpdateEngineStatus(transform.position.y >= previousAltitude || floatActive);
-        AdjustJetpack(floatActive);
     }
 
     void UpdateGroundedStatus()
